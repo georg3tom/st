@@ -211,8 +211,16 @@ static MouseShortcut mshortcuts[] = {
 #define TERMMOD (ControlMask|ShiftMask)
 
 static char *openurlcmd[] = { "/bin/sh", "-c",
-    "sed 's/.*│//g' | tr -d '\n' | grep -aEo '(((http|https)://|www\\.)[a-zA-Z0-9.]*[:]?[a-zA-Z0-9./&%?$#=_-]*)|((magnet:\\?xt=urn:btih:)[a-zA-Z0-9]*)'| uniq | sed 's/^www./http:\\/\\/www\\./g' | rofi -dmenu -i -p 'URL' -l 10 | xargs -r xdg-open",
+    "shopt -s lastpipe; set +m;sed 's/.*│//g' | tr -d '\n' | grep -aEo '(((http|https)://|www\\.)[a-zA-Z0-9.]*[:]?[a-zA-Z0-9./&%?$#=_-]*)|((magnet:\\?xt=urn:btih:)[a-zA-Z0-9]*)'| uniq | sed 's/^www./http:\\/\\/www\\./g' | read tmp && echo $tmp | grep -q . && echo $tmp | rofi -dmenu -i -p 'OPEN URL' -l 10 | xargs -r xdg-open",
     "externalpipe", NULL };
+
+static char *copyurlcmd[] = { "/bin/sh", "-c",
+    "shopt -s lastpipe; set +m;sed 's/.*│//g' | tr -d '\n' | grep -aEo '(((http|https)://|www\\.)[a-zA-Z0-9.]*[:]?[a-zA-Z0-9./&%?$#=_-]*)|((magnet:\\?xt=urn:btih:)[a-zA-Z0-9]*)'| uniq | sed 's/^www./http:\\/\\/www\\./g' | read tmp && echo $tmp | grep -q . && echo $tmp | rofi -dmenu -i -p 'COPY URL' -l 10 | xclip -selection clipboard",
+    "externalpipe", NULL };
+
+static char *copyoutput[] = { "/bin/sh", "-c", " \
+    tmpfile=$(mktemp /tmp/st-cmd-output.XXXXXX);trap 'rm \"$tmpfile\"' 0 1 15;sed -n \"w $tmpfile\";ps1=\"$(grep \"\\S\" \"$tmpfile\" | tail -n 1 | sed 's/^\\s*//' | cut -d' ' -f1)\";chosen=\"$(grep -F \"$ps1\" \"$tmpfile\" | sed '$ d' | tac | rofi -dmenu -p \"Copy which command's output?\" -i -l 10 | sed 's/[^^]/[&]/g; s/\\^/\\\\^/g')\";eps1=\"$(echo \"$ps1\" | sed 's/[^^]/[&]/g; s/\\^/\\\\^/g')\";awk \"/^$chosen$/{p=1;print;next} p&&/$eps1/{p=0};p\" \"$tmpfile\" | tail -n+2 | head -n-2 | xclip -selection clipboard;\
+    ", "externalpipe", NULL };
 
 
 static Shortcut shortcuts[] = {
@@ -229,11 +237,13 @@ static Shortcut shortcuts[] = {
 	{ TERMMOD,              XK_Y,           selpaste,       {.i =  0} },
 	{ ShiftMask,            XK_Insert,      selpaste,       {.i =  0} },
 	{ TERMMOD,              XK_Num_Lock,    numlock,        {.i =  0} },
-    { MODKEY,               XK_l,           externalpipe,   { .v = openurlcmd } },
    	{ MODKEY,               XK_Page_Up,     kscrollup,      {.i = -1} },
 	{ MODKEY,               XK_Page_Down,   kscrolldown,    {.i = -1} },
 	{ MODKEY,               XK_k,           kscrollup,      {.i =  3} },
 	{ MODKEY,               XK_j,           kscrolldown,    {.i =  3} },
+    { MODKEY,               XK_l,           externalpipe,   { .v = openurlcmd } },
+    { TERMMOD,               XK_L,           externalpipe,   { .v = copyurlcmd } },
+	{ MODKEY,               XK_o,           externalpipe,   {.v = copyoutput } },
 };
 
 /*
