@@ -1,0 +1,18 @@
+~/Documents/st master!?                                                               01:07
+❯ grep "\S" "$tmp" | tail -n 1 | sed 's/^\s*//' | cut -d' ' -f1
+
+~/Documents/st master!?
+❯ cat tmp
+
+~/Documents/st master!?
+❯ cat $tmp
+
+~/Documents/st master!?
+❯ ls
+arg.h              config.h   LICENSE   st.1        st.desktop  st.o   x.c
+coc                config.mk  Makefile  st.c        st.h        tmp    x.c.orig
+config.def.h       FAQ        README    st-copyout  st.h.orig   TODO   x.o
+config.def.h.orig  LEGACY     st        st.c.orig   st.info     win.h
+
+~/Documents/st master!?
+
