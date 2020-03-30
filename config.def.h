@@ -215,7 +215,7 @@ static char *openurlcmd[] = { "/bin/sh", "-c",
     "externalpipe", NULL };
 
 static char *copyurlcmd[] = { "/bin/sh", "-c",
-    "sed 's/.*│//g' | tr -d '\n' | grep -aEo '(((http|https)://|www\\.)[a-zA-Z0-9.]*[:]?[a-zA-Z0-9./&%?$#=_-]*)|((magnet:\\?xt=urn:btih:)[a-zA-Z0-9]*)'| uniq | sed 's/^www./http:\\/\\/www\\./g'; IFS=; [ ! -z $tmp ] && echo $tmp | rofi -dmenu -i -p 'COPY URL' -l 10 | xclip -selection clipboard",
+    "tmp=$(sed 's/.*│//g' | tr -d '\n' | grep -aEo '(((http|https)://|www\\.)[a-zA-Z0-9.]*[:]?[a-zA-Z0-9./&%?$#=_-]*)|((magnet:\\?xt=urn:btih:)[a-zA-Z0-9]*)'| uniq | sed 's/^www./http:\\/\\/www\\./g'); IFS=; [ ! -z $tmp ] && echo $tmp | rofi -dmenu -i -p 'COPY URL' -l 10 | xclip -selection clipboard",
     "externalpipe", NULL };
 
 static char *copyoutput[] = { "/bin/sh", "-c", " \
