@@ -244,6 +244,7 @@ static Shortcut shortcuts[] = {
     { MODKEY,               XK_l,           externalpipe,   {.v = openurlcmd} },
     { TERMMOD,              XK_L,           externalpipe,   {.v = copyurlcmd} },
 	{ MODKEY,               XK_o,           externalpipe,   {.v = copyoutput} },
+	{ TERMMOD,              XK_Return,      newterm,        {.i =  0} },
 };
 
 /*
