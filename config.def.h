@@ -211,15 +211,15 @@ static MouseShortcut mshortcuts[] = {
 #define TERMMOD (ControlMask|ShiftMask)
 
 static char *openurlcmd[] = { "/bin/sh", "-c",
-    "tmp=$(sed 's/.*│//g' | tr -d '\n' | grep -aEo '(((http|https)://|www\\.)[a-zA-Z0-9.]*[:]?[a-zA-Z0-9./&%?$#=_-]*)|((magnet:\\?xt=urn:btih:)[a-zA-Z0-9]*)'| uniq | sed 's/^www./http:\\/\\/www\\./g' ); IFS=; [ ! -z $tmp ] && echo $tmp | rofi -dmenu -i -p 'OPEN URL' -l 10 | xargs -r xdg-open",
+    "tmp=$(sed 's/.*│//g' | tr -d '\n' | grep -aEo '(((http|https)://|www\\.)[a-zA-Z0-9.]*[:]?[a-zA-Z0-9./&%?$#=_-]*)|((magnet:\\?xt=urn:btih:)[a-zA-Z0-9]*)'| uniq | sed 's/^www./http:\\/\\/www\\./g' ); IFS=; [ ! -z $tmp ] && echo $tmp | rofi -config ~/.config/rofi/themes/appsmenu.rasi -dmenu -i -p 'OPEN URL' -l 10 | xargs -r xdg-open",
     "externalpipe", NULL };
 
 static char *copyurlcmd[] = { "/bin/sh", "-c",
-    "tmp=$(sed 's/.*│//g' | tr -d '\n' | grep -aEo '(((http|https)://|www\\.)[a-zA-Z0-9.]*[:]?[a-zA-Z0-9./&%?$#=_-]*)|((magnet:\\?xt=urn:btih:)[a-zA-Z0-9]*)'| uniq | sed 's/^www./http:\\/\\/www\\./g'); IFS=; [ ! -z $tmp ] && echo $tmp | rofi -dmenu -i -p 'COPY URL' -l 10 | xclip -selection clipboard",
+    "tmp=$(sed 's/.*│//g' | tr -d '\n' | grep -aEo '(((http|https)://|www\\.)[a-zA-Z0-9.]*[:]?[a-zA-Z0-9./&%?$#=_-]*)|((magnet:\\?xt=urn:btih:)[a-zA-Z0-9]*)'| uniq | sed 's/^www./http:\\/\\/www\\./g'); IFS=; [ ! -z $tmp ] && echo $tmp | rofi -config ~/.config/rofi/themes/appsmenu.rasi -dmenu -i -p 'COPY URL' -l 10 | xclip -selection clipboard",
     "externalpipe", NULL };
 
 static char *copyoutput[] = { "/bin/sh", "-c", " \
-    tmpfile=$(mktemp /tmp/st-cmd-output.XXXXXX);trap 'rm \"$tmpfile\"' 0 1 15;sed -n \"w $tmpfile\";ps1=\"$(grep \"\\S\" \"$tmpfile\" | tail -n 1 | sed 's/^\\s*//' | cut -d' ' -f1)\";chosen=\"$(grep -F \"$ps1\" \"$tmpfile\" | sed '$ d' | tac | rofi -dmenu -p \"COPY OUTPUT\" -i -l 10 | sed 's/[^^]/[&]/g; s/\\^/\\\\^/g')\";eps1=\"$(echo \"$ps1\" | sed 's/[^^]/[&]/g; s/\\^/\\\\^/g')\";awk \"/^$chosen$/{p=1;print;next} p&&/$eps1/{p=0};p\" \"$tmpfile\" | tail -n+2 | head -n-2 | xclip -selection clipboard;\
+    tmpfile=$(mktemp /tmp/st-cmd-output.XXXXXX);trap 'rm \"$tmpfile\"' 0 1 15;sed -n \"w $tmpfile\";ps1=\"$(grep \"\\S\" \"$tmpfile\" | tail -n 1 | sed 's/^\\s*//' | cut -d' ' -f1)\";chosen=\"$(grep -F \"$ps1\" \"$tmpfile\" | sed '$ d' | tac | rofi -config ~/.config/rofi/themes/appsmenu.rasi -dmenu -p \"COPY OUTPUT\" -i -l 10 | sed 's/[^^]/[&]/g; s/\\^/\\\\^/g')\";eps1=\"$(echo \"$ps1\" | sed 's/[^^]/[&]/g; s/\\^/\\\\^/g')\";awk \"/^$chosen$/{p=1;print;next} p&&/$eps1/{p=0};p\" \"$tmpfile\" | tail -n+2 | head -n-2 | xclip -selection clipboard;\
     ", "externalpipe", NULL };
 
 
